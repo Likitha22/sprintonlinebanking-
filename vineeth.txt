@@ -1,0 +1,93 @@
+ublic IActionResult Transfer(long text2)
+        {
+            Customer x = db.customers.Where(x => x.AccountNumber == text2).SingleOrDefault();
+            ViewBag.UserName = x.UserName;
+            ViewBag.AccountNumber = x.AccountNumber;
+            return View();
+            
+        }
+        public IActionResult Transfer1(string text1, long text2, int text3, string text4, long text5)
+        {
+            ViewBag.UserName = text1;
+            ViewBag.AccountNumber = text2;
+            ViewBag.Amount = text3;
+            ViewBag.SenderUserName = text4;
+            ViewBag.SenderAccountNumber = text5;
+            Customer p = db.customers.Where(x => x.AccountNumber == text2 && x.UserName == text1).SingleOrDefault();
+            Customer q = db.customers.Where(x => x.AccountNumber == text5 && x.UserName == text4).SingleOrDefault();
+            if (q == null)
+            {
+                ViewBag.status = "Invalid Receiver Credentials";
+                return View("Transfer1");
+            }
+            else if (text3 > p.Amount)
+            {
+                ViewBag.status = "You don't have sufficiant balance";
+                return View("Transfer1");
+
+            }
+            else if (text3 == 0 || text4 == null || text5 == 0)
+            {
+                ViewBag.status = "Please fill all Details";
+                return View("Transfer1");
+            }
+            ViewBag.Email = p.Email;
+            ViewBag.phone = p.phone;
+            ViewBag.FullName = p.FullName;
+            ViewBag.Email2 = q.Email;
+            
+            
+          
+                return View("Transfer2");
+            
+
+
+        }
+        public IActionResult Transfer2(string text1, long text2, int text3, string text4, long text5,string text6,string text7)
+        {
+            ViewBag.UserName = text1;
+            ViewBag.AccountNumber = text2;
+            ViewBag.Amount = text3;
+            ViewBag.SenderUserName = text4;
+            ViewBag.SenderAccountNumber = text5;
+            Customer p = db.customers.Where(x => x.AccountNumber == text2 && x.UserName == text1).SingleOrDefault();
+            Customer q = db.customers.Where(x => x.AccountNumber == text5 && x.UserName == text4).SingleOrDefault();
+
+            ViewBag.Email = text6;
+            ViewBag.phone = p.phone;
+            ViewBag.FullName = p.FullName;
+            ViewBag.Email2 = text7;
+
+            if (q == null)
+            {
+                ViewBag.status = "Invalid Receiver Credentials";
+                return View("Transfer2");
+            }
+            else if (text3 > p.Amount)
+            {
+                ViewBag.status = "You don't have sufficiant balance";
+                return View("Transfer2");
+
+            }
+            else if (text3 == 0 || text4 == null || text5 == 0)
+            {
+                ViewBag.status = "Please fill all Details";
+                return View("Transfer2");
+            }
+            else
+            {
+                Transaction x = new Transaction();
+                x.SenderUserName = text1;
+                x.SenderAccountNumber = text2;
+                x.Amount = text3;
+                x.ReceiverUserName = text4;
+                x.ReceiverAccountNumber = text5;
+                x.SenderEmail = p.Email;
+                x.ReceiverEmail = q.Email;
+                db.transactions.Add(x);
+                p.Amount = p.Amount - text3;
+                q.Amount = q.Amount + text3;
+                db.SaveChanges();
+                return View("CustomerLogin1");
+            }
+        }

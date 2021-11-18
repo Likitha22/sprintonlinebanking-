@@ -1,0 +1,102 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<head>
+    <style>
+        body {
+            background-image: Url('https://thumbs.dreamstime.com/z/online-banking-banner-website-internet-mobile-phone-blue-background-electronic-bank-payment-copy-space-digital-204929150.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            button:hover {
+                opacity: 0.8;
+            }
+    </style>
+</head>
+
+<body>
+    <h2>
+        Money Transfer
+    </h2>
+    <form id="form1" action="Transfer1" method="post">
+        <table>
+            <tr>
+                <td>Account Holder</td>
+                <td><input type="text" id="text1" name="text1" value="@ViewBag.UserName" readonly /></td>
+            </tr>
+            <tr>
+                <td>Account Number</td>
+                <td><input type="text" id="text2" name="text2" value="@ViewBag.AccountNumber" readonly /></td>
+            </tr>
+            <tr>
+                <td>Amount</td>
+                <td><input type="text" id="text3" name="text3" /></td>
+            </tr>
+            <tr>
+                <td>Receiver UserName</td>
+                <td><input type="text" id="text4" name="text4" /></td>
+            </tr>
+            <tr>
+                <td>Receiver AccountNumber</td>
+                <td><input type="text" id="text5" name="text5" /></td>
+            </tr>
+            <tr>
+                <td> <button type="submit" id="submit1" name="submit1" value="Send" />Send</td>
+            </tr>
+            @ViewBag.status
+        </table>
+    </form>
+</body>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace OnlineBanking.Models
+{
+    public class DalClass
+    {
+        ConDb db;
+        public DalClass(ConDb db)
+        {
+            this.db = db;
+        }
+        public bool LoginCheck(string uname, string pwd)
+        {
+            bool flag = false;
+            Customer obj = db.customers.Where(x => x.UserName == uname && x.Password == pwd).SingleOrDefault();
+            if (obj == null)
+            {
+                flag = false;
+            }
+            else
+            {
+                flag = true;
+            }
+            return flag;
+        }
+
+    }
+}

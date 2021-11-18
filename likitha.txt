@@ -1,0 +1,159 @@
+ public IActionResult homepage()
+        {
+            return View();
+        }
+        // this is for admin login check
+       
+        
+        // this is for admin login check
+        public IActionResult AdminLogin()
+        {
+            return View();
+        }
+        public IActionResult AdminLogin1(string text1, string text2)
+        {
+            string uname = text1;
+            string pass = text2;
+            if (uname == "admin" && pass == "password")
+            {
+                return View("adminhomepage");
+            }
+            ViewBag.status = "Invalid Credentials";
+            return View("AdminLogin");
+
+        }
+        //admin homepage
+        public IActionResult adminhomepage()
+        {
+            return View();
+        }
+        // customer list
+        public IActionResult CList()
+        {
+            List<Customer> aa = db.customers.ToList();
+            return View(aa);
+        }
+        public ActionResult SearchUserName()
+        {
+            return View();
+        }
+        public ActionResult SearchUserName1(string text1)
+        {
+            string UserName =text1;
+            Customer obj = db.customers.Where(x => x.UserName == UserName).SingleOrDefault();
+
+            ViewBag.UserName =obj.UserName;
+            ViewBag.FullName =obj.FullName;
+            ViewBag.Gender =obj.Gender;
+            ViewBag.DOB =  obj.DOB;
+            ViewBag.phone =  obj.phone;
+            ViewBag.Email = obj.Email;
+            ViewBag.Password =obj.Password;
+            ViewBag.Address = obj.Address;
+            ViewBag.Branch = obj.Branch;
+            ViewBag.AccountType =obj.AccountType;
+            ViewBag.Amount =obj.Amount;
+            ViewBag.AccountNumber =obj.AccountNumber;
+
+            return View("SearchUserName1");
+        }
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<head>
+    <style>
+        body {
+            background-image: Url('https://thumbs.dreamstime.com/z/online-banking-banner-website-internet-mobile-phone-blue-background-electronic-bank-payment-copy-space-digital-204929150.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1> Admin Home Page </h1>
+    <hr />
+    <h3> Admin Controls </h3>
+    <br />
+    @Html.ActionLink("CustomerList", "Clist")
+    <br />
+    <br />
+    @Html.ActionLink("Transactions", "CTrans1")
+    <br />
+    <br />
+    <br />
+    @Html.ActionLink("Sign Out", "homepage")
+</body>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<html>
+<head>
+    <style>
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            button:hover {
+                opacity: 0.8;
+            }
+
+        body {
+            background-image: Url('https://investors.togethermoney.com/sites/together-finance/files/together-finance/together-investor-portal/investor-portal.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+    </style>
+</head>
+<body>
+
+    
+    <form id="form1" action="AdminLogin1" method="post">
+       
+        <table style="margin-left:auto;margin-right:auto;">
+            
+           <tr>
+               <td colspan="2">
+                   <h2 align="center">
+                        Admin Login
+                   </h2> 
+               </td>
+           </tr>
+            <tr>
+                <td><b> Username</b></td>
+                <td><input type="text" name="text1" placeholder="User name" required></td>
+            </tr>
+            <tr>
+                <td><b> Password</b></td>
+                <td><input type="password" name="text2" placeholder="Password" required></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><button type="submit">Log In</button></td>
+            </tr>
+            <tr>
+                <td>@ViewBag.status</td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

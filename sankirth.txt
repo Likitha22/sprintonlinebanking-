@@ -1,0 +1,99 @@
+public IActionResult CustomerLogin()
+        {
+            return View();
+        }
+        // Customer Validation and homepage
+        public IActionResult CustomerLogin1(string text1, string text2)
+        {
+            string uname = text1;
+            string pwd = text2;
+            DalClass dc = new DalClass(db);
+            bool flag = dc.LoginCheck(uname, pwd);
+            if (flag == true)
+            {
+               Customer obj = db.customers.Where(x => x.UserName == uname && x.Password == pwd).SingleOrDefault();
+                ViewBag.UserName = obj.UserName;
+                ViewBag.FullName = obj.FullName;
+                ViewBag.Email = obj.Email;
+                ViewBag.phone = obj.phone;
+                ViewBag.AccountNumber = obj.AccountNumber;
+                return View();
+            }
+            else
+            {
+                ViewBag.status = "Invalid Credentials";
+                return View("CustomerLogin");
+            }
+        }
+
+        // User registration
+            public IActionResult SignUp()
+            {
+                return View();
+            }
+
+        public IActionResult SignUp1(string text1, string text2, string text3, string text4, string text5, string text6, string text7, string text8, string text9, string text10)
+        {
+            ViewBag.UserName = text1;
+            ViewBag.FullName = text2;
+            ViewBag.DOB = text3;
+            ViewBag.Gender = text4;
+            ViewBag.phone = text5;
+            ViewBag.Email = text6;
+            ViewBag.Address = text7;
+            ViewBag.Password = text8;
+            ViewBag.Branch = text9;
+            ViewBag.AccountType = text10;
+          
+            Customer obj1 = db.customers.Where(x => x.UserName == text1).SingleOrDefault();
+            if (obj1 != null)
+            {
+                ViewBag.status = "UserName is already taken. Try another UserName.";
+                return View("SignUp1");
+            }
+            else if (text1 == null || text8 == null)
+            {
+                ViewBag.status = "Please fill the Password or UserName";
+                return View("SignUp1");
+            }
+            else
+            {
+                Customer obj = new Customer();
+                obj.UserName = text1;
+                obj.FullName = text2;
+                obj.DOB = text3;
+                obj.Gender = text4;
+                obj.phone = text5;
+                obj.Email = text6;
+                obj.Password = text8;
+                obj.Address = text7;
+                obj.Branch = text9;
+                obj.AccountType = text10;
+
+                long q1;
+                for (; ; )
+                {
+                    Random rnd = new Random();
+                    q1 = rnd.Next();
+                    Customer d = db.customers.Where(x => x.AccountNumber == q1).SingleOrDefault();
+                    if (d != null)
+                    {
+                        continue;
+                    }
+                    obj.AccountNumber = q1;
+                    db.customers.Add(obj);
+                    db.SaveChanges();
+                    return View("CustomerLogin");
+                }
+            }
+        }
+           
+        //Money Transfer
+        public IActionResult Transfer(long text2)
+        {
+            Customer x = db.customers.Where(x => x.AccountNumber == text2).SingleOrDefault();
+            ViewBag.UserName = x.UserName;
+            ViewBag.AccountNumber = x.AccountNumber;
+            return View();
+            
+        }

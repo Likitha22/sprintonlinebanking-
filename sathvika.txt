@@ -1,0 +1,79 @@
+    public IActionResult Balance(long accno)
+        {
+            Customer x = db.customers.Where(x => x.AccountNumber == accno).SingleOrDefault();
+            ViewBag.UserName = x.UserName;
+            ViewBag.AccountNumber = x.AccountNumber;
+            ViewBag.Amount = x.Amount;
+            return View();
+        }
+        // User Transactions
+        public IActionResult Transaction1(long accno)
+        {
+            List<Transaction> x = db.transactions.Where(x => x.SenderAccountNumber == accno || x.ReceiverAccountNumber == accno).ToList();
+            return View(x);
+        }
+    }
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<head>
+    <style>
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            button:hover {
+                opacity: 0.8;
+            }
+
+        body {
+            background-image: Url('https://cdn1.vectorstock.com/i/1000x1000/27/70/modern-online-banking-vector-20452770.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h2>
+        Account Balance
+    </h2>
+    <form method="post" action="">
+
+        <table>
+
+            <tr>
+                <td>Account Holder Name</td>
+                <td><input type="text" id="text1" name="text1" value="@ViewBag.UserName" readonly /></td>
+            </tr>
+            <tr>
+                <td>Account Number</td>
+                <td><input type="text" id="text2" name="text2" value="@ViewBag.AccountNumber" readonly /></td>
+            </tr>
+            <tr>
+                <td>Balance</td>
+                <td><input type="text" id="text3" name="text3" value="@ViewBag.Amount" readonly /></td>
+            </tr>
+        </table>
+    </form>
+</body>

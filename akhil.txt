@@ -1,0 +1,124 @@
+ public ActionResult SearchUserName2(long text1, string text2, string text4, string text5, string text6, string text7, string text8, int text10)
+        {
+            Customer obj1 = db.customers.Where(x => x.AccountNumber == text1).SingleOrDefault();
+            obj1.AccountType = text2;
+            obj1.FullName = text4;
+            obj1.Gender = text5;
+            obj1.DOB = text6;
+            obj1.phone = text7;
+            obj1.Email = text8;
+            obj1.Amount = obj1.Amount + text10;
+            db.SaveChanges();
+            return RedirectToAction("CList");
+        }
+        // Transaction List
+        public IActionResult CTrans1()
+        {
+            List<Transaction> aa = db.transactions.ToList();
+            return View(aa);
+        }
+
+        public IActionResult TSearch()
+        {
+            
+            return View();
+        }
+        // Customer Login
+        public IActionResult CustomerLogin()
+        {
+            return View();
+        }
+        // Customer Validation and homepage
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<head>
+    <style>
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            button:hover {
+                opacity: 0.8;
+            }
+
+        body {
+            background-image: Url('https://cdn1.vectorstock.com/i/1000x1000/27/70/modern-online-banking-vector-20452770.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+       
+    </style>
+</head>
+<body>
+    @Html.ActionLink("Go Back", "CList")
+    <h2>
+        User Information
+    </h2>
+    <form id="form1" action="SearchUserName2" method="post">
+        <table>
+
+            <tr>
+                <td><b>Account Number*</b></td>
+                <td><input type="text" id="text1" name="text1" value="@ViewBag.AccountNumber" readonly /></td>
+            </tr>
+            <tr>
+                <td><b>Account Type</b></td>
+                <td><input type="text" id="text2" name="text2" value="@ViewBag.AccountType" /></td>
+            </tr>
+            <tr>
+                <td><b>User Name*</b></td>
+                <td><input type="text" id="text3" name="text3" value="@ViewBag.UserName" readonly /></td>
+            </tr>
+            <tr>
+                <td><b>Account Holder FullName</b></td>
+                <td><input type="text" id="text4" name="text4" value="@ViewBag.FullName" /></td>
+            </tr>
+            <tr>
+                <td><b>Gender</b></td>
+                <td><input type="text" id="text5" name="text5" value="@ViewBag.Gender" /></td>
+            </tr>
+            <tr>
+                <td><b>DOB</b></td>
+                <td><input type="text" id="text6" name="text6" value="@ViewBag.DOB" /></td>
+            </tr>
+            <tr>
+                <td><b>Contact</b></td>
+                <td><input type="text" id="text7" name="text7" value="@ViewBag.phone" /></td>
+            </tr>
+
+            <tr>
+                <td><b>Email</b></td>
+                <td><input type="text" id="text8" name="text8" value="@ViewBag.Email" /></td>
+            </tr>
+            <tr>
+                <td><b>Balance*</b></td>
+                <td><input type="text" id="text9" name="text9" value="@ViewBag.Amount" readonly /></td>
+            </tr>
+            <tr><td colspan="2" align="center"><button type="submit"> Update </button></td></tr>
+            <tr>
+                <td><b>Add Money</b></td>
+                <td><input type="text" id="text10" name="text10" value="0" /></td>
+            </tr>
+            <tr><td colspan="2" align="center"><button type="submit"> Add </button> </td></tr>
+        </table>
+    </form>
+</body>
